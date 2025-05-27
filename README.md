@@ -10,3 +10,4 @@ Este projeto gerencia registros de visitantes em presídios, garantindo que um p
 1️⃣ Clone este repositório:
 ```shell
 git clone https://github.com/seu-usuario/sistemaPrisional.git
+git remote add origin https://github.com/Gabri3lFarah/SistemaPrisional.git

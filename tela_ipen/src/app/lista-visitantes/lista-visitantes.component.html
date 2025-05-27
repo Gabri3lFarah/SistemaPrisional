@@ -1,0 +1,9 @@
+<h2>Lista de Prisioneiros</h2>
+<ul>
+  <li *ngFor="let prisioneiro of prisioneiros">
+    <a [routerLink]="['/prisioneiro', prisioneiro.id]">
+      {{ prisioneiro.name }} (ID: {{ prisioneiro.id }})
+    </a>
+  </li>
+</ul>
+<a routerLink="/cadastro">Cadastrar novo visitante</a>

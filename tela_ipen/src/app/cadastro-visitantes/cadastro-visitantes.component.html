@@ -1,0 +1,57 @@
+<h2>Cadastro de Visitantes</h2>
+
+<form (submit)="cadastrarVisitante()">
+  <label for="visitorName">Nome do Visitante:</label>
+  <input type="text" id="visitorName" name="visitorName" [(ngModel)]="visitante.nome" required>
+
+  <label>Selecione um prisioneiro:</label>
+  <div style="margin-bottom: 1em;">
+    <button
+      type="button"
+      *ngFor="let prisioneiro of prisioneiros"
+      [class.selected]="visitante.prisioneiroId == prisioneiro.id"
+      (click)="visitante.prisioneiroId = prisioneiro.id"
+      style="margin: 0 4px 4px 0; padding: 4px 10px;"
+    >
+      {{ prisioneiro.name }}
+    </button>
+  </div>
+
+  <label for="lawyer">É advogado?</label>
+  <input
+    type="checkbox"
+    id="lawyer"
+    name="lawyer"
+    [(ngModel)]="visitante.eAdvogado"
+    (change)="verificarAdvogado()"
+    [ngModelOptions]="{standalone: true}"
+  >
+
+  <div *ngIf="visitante.eAdvogado">
+    <label for="lawyerName">Nome do Advogado:</label>
+    <input type="text" id="lawyerName" name="lawyerName" [(ngModel)]="visitante.nomeAdvogado">
+
+    <ng-container *ngIf="+visitante.prisioneiroId === velhoVirilId">
+      <label for="authorizationCode">
+        Código de autorização (obrigatório para Velho Viril):
+      </label>
+      <input
+        type="number"
+        id="authorizationCode"
+        name="authorizationCode"
+        [(ngModel)]="visitante.authorizationCode"
+        required
+      >
+    </ng-container>
+  </div>
+
+  <button type="submit" [disabled]="!visitante.prisioneiroId">Cadastrar Visitante</button>
+</form>
+
+<style>
+.selected {
+  background: #1976d2;
+  color: #fff;
+  border: 1px solid #1976d2;
+}
+</style>

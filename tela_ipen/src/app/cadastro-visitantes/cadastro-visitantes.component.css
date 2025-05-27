@@ -1,0 +1,81 @@
+.selected {
+  background: #C8102E; /* Vermelho forte */
+  color: white;
+  border: 1px solid #C8102E;
+  font-weight: bold;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.selected:hover {
+  background: #9B0F23;
+}
+
+form {
+  background: #FFFFFF; /* Branco de fundo */
+  padding: 25px;
+  border-radius: 10px;
+  width: 60%;
+  margin: auto;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 3px solid #C8102E;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  border-radius: 5px;
+  border: 1px solid #197A38; /* Verde institucional */
+  font-size: 16px;
+  transition: border-color 0.3s ease-in-out;
+  background: white;
+}
+
+input:focus, select:focus {
+  border-color: #C8102E;
+  outline: none;
+}
+
+button {
+  background-color: #C8102E;
+  color: white;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.1s;
+}
+
+button:hover {
+  background-color: #9B0F23;
+  transform: scale(1.05);
+}
+
+button:active {
+  background-color: #720E1B;
+}
+
+label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #197A38; /* Verde institucional */
+  margin-top: 10px;
+  display: block;
+}
+
+div {
+  margin-bottom: 1em;
+}
+
+/* Estilo para a bandeira */
+.flag-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.flag-container img {
+  width: 150px;
+  border: 3px solid #C8102E;
+}

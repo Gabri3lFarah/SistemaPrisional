@@ -2,6 +2,8 @@ package com.gabrielfarah.visitas.resource;
 
 import com.gabrielfarah.visitas.entity.Visitante;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -32,7 +34,7 @@ public class VisitanteResource {
 
     @POST
     @Transactional
-    public Response create(VisitanteRequest request) {
+    public Response create(@Valid @NotNull VisitanteRequest request) {
         if (request.nome == null || request.nome.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Nome é obrigatório")
@@ -68,7 +70,7 @@ public class VisitanteResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(@PathParam("id") Long id, VisitanteRequest request) {
+    public Response update(@PathParam("id") Long id, @Valid @NotNull VisitanteRequest request) {
         Visitante visitante = Visitante.findById(id);
         if (visitante == null) {
             return Response.status(Response.Status.NOT_FOUND)
@@ -112,8 +114,12 @@ public class VisitanteResource {
     }
 
     public static class VisitanteRequest {
+        @NotNull(message = "Nome é obrigatório")
         public String nome;
+        
+        @NotNull(message = "CPF é obrigatório")
         public String cpf;
+        
         public String telefone;
         public String relacaoPrisioneiro;
         public Boolean isAdvogado;

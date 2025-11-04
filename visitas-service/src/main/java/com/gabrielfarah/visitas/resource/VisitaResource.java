@@ -3,6 +3,8 @@ package com.gabrielfarah.visitas.resource;
 import com.gabrielfarah.visitas.entity.Visita;
 import com.gabrielfarah.visitas.service.VisitaService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -48,7 +50,7 @@ public class VisitaResource {
     }
 
     @POST
-    public Response create(VisitaRequest request) {
+    public Response create(@Valid @NotNull VisitaRequest request) {
         if (request.prisioneiroId == null) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Prisioneiro ID é obrigatório")
@@ -80,7 +82,7 @@ public class VisitaResource {
 
     @PUT
     @Path("/{id}/status")
-    public Response updateStatus(@PathParam("id") Long id, StatusUpdateRequest request) {
+    public Response updateStatus(@PathParam("id") Long id, @Valid @NotNull StatusUpdateRequest request) {
         if (request.status == null || request.status.trim().isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity("Status é obrigatório")
@@ -98,14 +100,20 @@ public class VisitaResource {
     }
 
     public static class VisitaRequest {
+        @NotNull(message = "Prisioneiro ID é obrigatório")
         public Long prisioneiroId;
+        
+        @NotNull(message = "Visitante ID é obrigatório")
         public Long visitanteId;
+        
         public LocalDateTime dataVisita;
         public String observacoes;
     }
 
     public static class StatusUpdateRequest {
+        @NotNull(message = "Status é obrigatório")
         public String status;
+        
         public String motivoNegacao;
     }
 }

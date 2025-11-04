@@ -49,6 +49,12 @@
             <artifactId>quarkus-rest-jackson</artifactId>
         </dependency>
         
+        <!-- Validation -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-validator</artifactId>
+        </dependency>
+        
         <!-- Database -->
         <dependency>
             <groupId>io.quarkus</groupId>

@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  # Zookeeper for Kafka
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - sistema-prisional-network
+
+  # Kafka broker
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    networks:
+      - sistema-prisional-network
+
+  # PostgreSQL database for visitas-service
+  visitas-db:
+    image: postgres:16-alpine
+    container_name: visitas-db
+    environment:
+      POSTGRES_DB: visitas_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - visitas-db-data:/var/lib/postgresql/data
+    networks:
+      - sistema-prisional-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Visitas Service
+  visitas-service:
+    build:
+      context: ./visitas-service
+      dockerfile: Dockerfile
+    container_name: visitas-service
+    depends_on:
+      visitas-db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+    environment:
+      DATABASE_HOST: visitas-db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: visitas_db
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      PRISIONEIRO_SERVICE_URL: http://prisioneiro-core:8080
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    ports:
+      - "8081:8081"
+    networks:
+      - sistema-prisional-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # PostgreSQL database for prisioneiro-core (existing service)
+  prisioneiro-db:
+    image: postgres:16-alpine
+    container_name: prisioneiro-db
+    environment:
+      POSTGRES_DB: sistema_prisional
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - prisioneiro-db-data:/var/lib/postgresql/data
+    networks:
+      - sistema-prisional-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Prisioneiro Core Service (placeholder - to be built from main code)
+  # This is a placeholder entry. You would need to:
+  # 1. Build a Docker image for the existing monolith
+  # 2. Update the image reference below
+  # 3. Ensure it connects to prisioneiro-db
+  prisioneiro-core:
+    image: sistema-prisional/prisioneiro-core:latest
+    container_name: prisioneiro-core
+    depends_on:
+      prisioneiro-db:
+        condition: service_healthy
+    environment:
+      # These would need to be configured based on your existing application
+      DATABASE_HOST: prisioneiro-db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: sistema_prisional
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - sistema-prisional-network
+    # Note: This service will fail to start without the actual image
+    # Comment this out or build the image first
+
+volumes:
+  visitas-db-data:
+  prisioneiro-db-data:
+
+networks:
+  sistema-prisional-network:
+    driver: bridge

@@ -106,25 +106,28 @@ services:
   # 1. Build a Docker image for the existing monolith
   # 2. Update the image reference below
   # 3. Ensure it connects to prisioneiro-db
-  prisioneiro-core:
-    image: sistema-prisional/prisioneiro-core:latest
-    container_name: prisioneiro-core
-    depends_on:
-      prisioneiro-db:
-        condition: service_healthy
-    environment:
-      # These would need to be configured based on your existing application
-      DATABASE_HOST: prisioneiro-db
-      DATABASE_PORT: 5432
-      DATABASE_NAME: sistema_prisional
-      DATABASE_USER: postgres
-      DATABASE_PASSWORD: postgres
-    ports:
-      - "8080:8080"
-    networks:
-      - sistema-prisional-network
-    # Note: This service will fail to start without the actual image
-    # Comment this out or build the image first
+  # 4. Uncomment the service below when the image is ready
+  
+  # NOTE: Service commented out because the image doesn't exist yet.
+  # Uncomment after building the prisioneiro-core Docker image.
+  
+  # prisioneiro-core:
+  #   image: sistema-prisional/prisioneiro-core:latest
+  #   container_name: prisioneiro-core
+  #   depends_on:
+  #     prisioneiro-db:
+  #       condition: service_healthy
+  #   environment:
+  #     # These would need to be configured based on your existing application
+  #     DATABASE_HOST: prisioneiro-db
+  #     DATABASE_PORT: 5432
+  #     DATABASE_NAME: sistema_prisional
+  #     DATABASE_USER: postgres
+  #     DATABASE_PASSWORD: postgres
+  #   ports:
+  #     - "8080:8080"
+  #   networks:
+  #     - sistema-prisional-network
 
 volumes:
   visitas-db-data:

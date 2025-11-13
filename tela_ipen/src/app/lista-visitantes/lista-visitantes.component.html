@@ -1,9 +1,33 @@
-<h2>Lista de Prisioneiros</h2>
-<ul>
-  <li *ngFor="let prisioneiro of prisioneiros">
-    <a [routerLink]="['/prisioneiro', prisioneiro.id]">
-      {{ prisioneiro.name }} (ID: {{ prisioneiro.id }})
-    </a>
-  </li>
-</ul>
-<a routerLink="/cadastro">Cadastrar novo visitante</a>
+<div class="page-container">
+  <div class="page-header">
+    <h2>📋 Lista de Prisioneiros</h2>
+    <p class="subtitle">Selecione um prisioneiro para registrar uma visita</p>
+  </div>
+
+  <div class="prisoners-grid" *ngIf="prisioneiros.length > 0; else noPrisoners">
+    <div class="prisoner-card" *ngFor="let prisioneiro of prisioneiros">
+      <div class="card-header">
+        <span class="prisoner-icon">👤</span>
+        <h3>{{ prisioneiro.name }}</h3>
+      </div>
+      <div class="card-body">
+        <div class="info-item">
+          <span class="label">ID:</span>
+          <span class="value">{{ prisioneiro.id }}</span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a routerLink="/cadastro" class="btn btn-primary">
+          ➕ Registrar Visita
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noPrisoners>
+    <div class="empty-state">
+      <span class="empty-icon">📭</span>
+      <p>Nenhum prisioneiro cadastrado no sistema.</p>
+    </div>
+  </ng-template>
+</div>

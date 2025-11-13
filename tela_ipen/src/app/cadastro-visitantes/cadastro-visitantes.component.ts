@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ApiService } from '../services/api.service';
 
 @Component({
@@ -8,10 +9,10 @@ import { ApiService } from '../services/api.service';
   templateUrl: './cadastro-visitantes.component.html',
   styleUrls: ['./cadastro-visitantes.component.css'],
   standalone: true,
-  imports: [FormsModule, CommonModule]
+  imports: [FormsModule, CommonModule, RouterModule]
 })
 export class CadastroVisitantesComponent implements OnInit {
-  visitante = { nome: '', eAdvogado: false, nomeAdvogado: '', prisioneiroId: null, authorizationCode: null };
+  visitante = { nome: '', eAdvogado: false, nomeAdvogado: '', prisioneiroId: null as number | null, authorizationCode: null as number | null };
   velhoVirilId = 41;
   prisioneiros: any[] = [];
 

@@ -1,2 +1,25 @@
-<h1>Bem-vindo ao Sistema Prisional</h1>
-<router-outlet></router-outlet>
+<div class="app-container">
+  <header class="main-header">
+    <div class="header-content">
+      <div class="logo">
+        <h1>🏛️ Sistema Prisional IPEN</h1>
+      </div>
+      <nav class="main-nav">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link">
+          <span class="icon">👥</span> Lista de Prisioneiros
+        </a>
+        <a routerLink="/cadastro" routerLinkActive="active" class="nav-link">
+          <span class="icon">➕</span> Cadastrar Visitante
+        </a>
+      </nav>
+    </div>
+  </header>
+  
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+  
+  <footer class="main-footer">
+    <p>&copy; 2025 Sistema Prisional IPEN - Gerenciamento de Visitas</p>
+  </footer>
+</div>

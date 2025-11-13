@@ -1,3 +1,33 @@
+# SistemaPrisional
+
+Este repositório contém o Sistema Prisional completo, incluindo:
+- **prisioneiro-core**: Backend principal (Quarkus + Java 21 + MySQL)
+- **visitas-service**: Microserviço de visitas (Quarkus + Java 17 + PostgreSQL)
+- **tela_ipen**: Frontend Angular
+
+## 🐳 Docker (Recomendado)
+
+A maneira mais fácil de executar todo o sistema é usando Docker. Veja o [DOCKER.md](DOCKER.md) para instruções completas.
+
+**Início rápido:**
+```bash
+# 1. Construir as aplicações Java
+./build.sh
+
+# 2. Iniciar todos os serviços
+docker compose up --build
+
+# Ou usar o Makefile
+make up
+```
+
+Após iniciar, acesse:
+- Frontend: http://localhost:4200
+- Backend Principal: http://localhost:8080
+- Microserviço de Visitas: http://localhost:8081
+
+---
+
 # SistemaPrisional — visitas-service
 
 Este repositório contém o módulo `visitas-service`, um microserviço Quarkus responsável por gerenciar Visitas e Visitantes no sistema prisional. O objetivo é extrair essas responsabilidades do serviço core para um serviço dedicado, com DB próprio e pronto para operar em arquitetura distribuída (event-driven + HTTP fallback).

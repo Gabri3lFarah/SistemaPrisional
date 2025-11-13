@@ -1,5 +1,46 @@
-*
-!target/*-runner
-!target/*-runner.jar
-!target/lib/*
-!target/quarkus-app/*
+# Build artifacts
+target/
+*.jar
+*.war
+*.ear
+
+# IDE files
+.idea/
+.vscode/
+.settings/
+.classpath
+.project
+*.iml
+*.iws
+*.ipr
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation and non-essential files
+*.md
+!README.md
+LICENSE
+
+# Test and development files
+.quarkus/
+.factorypath
+
+# Environment files (these can contain secrets)
+.env
+
+# Docker files (not needed in build context)
+.dockerignore
+Dockerfile
+docker-compose*.yml
+
+# Other services directories
+visitas-service/
+tela_ipen/
+sitemaPrisional/

@@ -11,7 +11,10 @@ A maneira mais fácil de executar todo o sistema é usando Docker. Veja o [DOCKE
 
 **Início rápido:**
 ```bash
-# Iniciar todos os serviços
+# 1. Construir as aplicações Java
+./build.sh
+
+# 2. Iniciar todos os serviços
 docker compose up --build
 
 # Ou usar o Makefile

@@ -1,4 +1,4 @@
-.PHONY: help build up down logs clean dev-up dev-down rebuild
+.PHONY: help build up down logs clean dev-up dev-down rebuild build-apps
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -6,10 +6,20 @@ help: ## Show this help message
 	@echo 'Available targets:'
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
-build: ## Build all Docker images
+build-apps: ## Build Java applications (required before docker build)
+	@echo "Building Java applications..."
+	mvn clean package -DskipTests -B
+	mvn -f visitas-service clean package -DskipTests -B
+	@echo "✓ Applications built successfully"
+
+build: build-apps ## Build Java apps and Docker images
 	docker compose build
 
-up: ## Start all services
+up: ## Start all services (builds apps first if needed)
+	@if [ ! -d "target/quarkus-app" ]; then \
+		echo "Building applications first..."; \
+		make build-apps; \
+	fi
 	docker compose up -d
 
 down: ## Stop all services
@@ -29,6 +39,7 @@ dev-down: ## Stop development infrastructure services
 
 rebuild: ## Rebuild and restart all services
 	docker compose down
+	make build-apps
 	docker compose build --no-cache
 	docker compose up -d
 

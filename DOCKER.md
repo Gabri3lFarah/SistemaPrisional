@@ -4,7 +4,11 @@ Este guia explica como executar todo o Sistema Prisional usando Docker e Docker 
 
 ## Pré-requisitos
 
-- Docker Desktop instalado (ou Docker Engine + Docker Compose)
+- **Java 21** (JDK) para construir o prisioneiro-core
+- **Java 17** (JDK) para construir o visitas-service (ou use Java 21 que é compatível)
+- **Maven 3.8+** para construir os projetos Java
+- **Node.js 20+** e **npm** para construir o frontend (opcional, o Docker faz isso)
+- **Docker Desktop** instalado (ou Docker Engine + Docker Compose)
 - 8GB de RAM disponível recomendado
 - Portas disponíveis: 3306, 4200, 5433, 8080, 8081, 9092, 2181
 
@@ -21,7 +25,22 @@ O sistema é composto por 7 serviços principais:
 
 ## Executando o Sistema
 
-### Opção 1: Iniciar todos os serviços
+### Passo 1: Construir os aplicativos Java
+
+**Importante**: As aplicações backend devem ser compiladas localmente antes de construir as imagens Docker.
+
+```bash
+# Opção 1: Usar o script de build
+./build.sh
+
+# Opção 2: Build manual
+mvn clean package -DskipTests -B
+mvn -f visitas-service clean package -DskipTests -B
+```
+
+### Passo 2: Iniciar todos os serviços
+
+#### Opção 1: Iniciar todos os serviços
 
 ```bash
 docker compose up --build
@@ -33,7 +52,7 @@ Este comando irá:
 - Iniciar todos os serviços na ordem correta
 - Configurar a rede entre os containers
 
-### Opção 2: Executar em background (modo daemon)
+#### Opção 2: Executar em background (modo daemon)
 
 ```bash
 docker compose up -d --build

@@ -7,12 +7,14 @@
 FROM maven:3.9.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
-# Copy pom.xml and download dependencies (for better layer caching)
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
+# Configure Maven to skip SSL certificate validation (for build environments with cert issues)
+ENV MAVEN_OPTS="-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true"
 
-# Copy source code and build the application
+# Copy project files
+COPY pom.xml ./
 COPY src ./src
+
+# Build the application
 RUN mvn clean package -DskipTests -B
 
 ## Stage 2: Create the runtime image

@@ -1,0 +1,31 @@
+<h1>Bem-vindo ao sistema prisional</h1>
+
+<div class="container">
+  <h2>Cadastro de Visitantes</h2>
+  <form (submit)="cadastrarVisitante()">
+    <label for="visitorName">Nome do Visitante:</label>
+    <input type="text" id="visitorName" [(ngModel)]="visitante.nome" required>
+
+    <label for="lawyer">É advogado?</label>
+    <input type="checkbox" id="lawyer" [(ngModel)]="visitante.eAdvogado" (change)="verificarAdvogado()">
+
+    <div *ngIf="visitante.eAdvogado">
+      <label for="lawyerName">Nome do Advogado:</label>
+      <input type="text" id="lawyerName" [(ngModel)]="visitante.nomeAdvogado">
+    </div>
+
+    <label for="prisioneiroId">Selecione um prisioneiro:</label>
+    <select id="prisioneiroId" [(ngModel)]="visitante.prisioneiroId">
+      <option *ngFor="let prisioneiro of prisioneiros" [value]="prisioneiro.id">
+        {{ prisioneiro.name }}
+      </option>
+    </select>
+
+    <div *ngIf="visitante.prisioneiroId === velhoVirilId">
+      <label for="authorizationCode">Código de autorização (obrigatório para Velho Viril):</label>
+      <input type="number" id="authorizationCode" [(ngModel)]="visitante.authorizationCode" required>
+    </div>
+
+    <button type="submit">Cadastrar Visitante</button>
+  </form>
+</div>

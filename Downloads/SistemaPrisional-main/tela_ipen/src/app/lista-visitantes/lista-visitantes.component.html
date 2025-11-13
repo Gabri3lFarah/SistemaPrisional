@@ -1,0 +1,11 @@
+<h2>Lista de Prisioneiros</h2>
+<p style="margin-top: -8px; color: #666;">Itens abaixo são prisioneiros registrados — advogados são contatos associados aos prisioneiros e não aparecem como participantes separados nesta lista.</p>
+<ul>
+  <li *ngFor="let prisioneiro of prisioneiros">
+    <a [routerLink]="['/prisioneiro', prisioneiro.id]">
+      <strong>{{ prisioneiro.name }}</strong>
+      <small style="color: #666; margin-left: 8px;">(ID: {{ prisioneiro.id }})</small>
+    </a>
+  </li>
+</ul>
+<a routerLink="/cadastro">Cadastrar novo visitante</a>

@@ -81,36 +81,35 @@ services:
       timeout: 10s
       retries: 3
 
-  # MySQL database for prisioneiro-core (main backend)
+  # PostgreSQL database for prisioneiro-core (existing service)
   prisioneiro-db:
     image: mysql:8.0
     container_name: prisioneiro-db
     environment:
-      MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: sistema_prisional
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 1234
     ports:
       - "3306:3306"
     volumes:
       - prisioneiro-db-data:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
+      - ./sistema_prisional.sql:/docker-entrypoint-initdb.d/sistema_prisional.sql:ro
     networks:
       - sistema-prisional-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p1234"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -P 3306 -uroot -p1234"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Prisioneiro Core Service (placeholder - to be built from main code)
-  # This is a placeholder entry. You would need to:
-  # 1. Build a Docker image for the existing monolith
-  # 2. Update the image reference below
-  # 3. Ensure it connects to prisioneiro-db
-  # 4. Uncomment the service below when the image is ready
-  
-  # NOTE: Service commented out because the image doesn't exist yet.
-  # Uncomment after building the prisioneiro-core Docker image.
-  
+  # Prisioneiro Core Service (placeholder - disabled)
+  # The prisioneiro-core service has been disabled because the image referenced
+  # in this compose file (sistema-prisional/prisioneiro-core:latest) does not
+  # exist in the registry. To run the application locally you can either:
+  #  - build an image for the main application and restore this service block,
+  #  - or run the backend locally with `mvn quarkus:dev` and leave this service disabled.
+
   # prisioneiro-core:
   #   image: sistema-prisional/prisioneiro-core:latest
   #   container_name: prisioneiro-core
@@ -118,16 +117,17 @@ services:
   #     prisioneiro-db:
   #       condition: service_healthy
   #   environment:
-  #     # These would need to be configured based on your existing application
   #     DATABASE_HOST: prisioneiro-db
-  #     DATABASE_PORT: 5432
+  #     DATABASE_PORT: 3306
   #     DATABASE_NAME: sistema_prisional
-  #     DATABASE_USER: postgres
-  #     DATABASE_PASSWORD: postgres
+  #     DATABASE_USER: root
+  #     DATABASE_PASSWORD: 1234
   #   ports:
   #     - "8080:8080"
   #   networks:
   #     - sistema-prisional-network
+  #   # Note: This service will fail to start without the actual image
+  #   # Comment this out or build the image first
 
 volumes:
   visitas-db-data:

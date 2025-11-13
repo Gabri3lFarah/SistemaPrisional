@@ -112,8 +112,7 @@ Solução de problemas comuns
 - Testcontainers falhando nos testes
   - Certifique-se Docker está rodando e que o backend WSL2 está habilitado no Windows.
 
-Contribuição
-- Se quiser adicionar melhorias (consumer Kafka, outbox publisher, testes E2E), crie uma branch a partir de `main`, implemente e abra um PR. Posso ajudar com os PRs e com o código dos consumers.
 
 Licença
 - (Adicione a licença desejada aqui — ex.: MIT)
+
